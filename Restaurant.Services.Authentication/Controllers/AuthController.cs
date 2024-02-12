@@ -47,5 +47,19 @@ namespace Restaurant.Services.Authentication.Controllers
             return Ok(response);
         }
 
+        [HttpPost("AssignRole")]
+        public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDTO registrationRequestDTO)
+        {
+            var assignRoleSucessful = await _authService.AssignRole(registrationRequestDTO.Email, registrationRequestDTO.Role.ToUpper());
+            if(!assignRoleSucessful)
+            {
+                response.Success = false;
+                response.DisplayMessage = "Couldn't assign Role";
+                return BadRequest(response);
+            }
+            return Ok(response);
+
+        }
+
     }
 }

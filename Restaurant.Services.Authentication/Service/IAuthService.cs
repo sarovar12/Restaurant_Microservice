@@ -6,6 +6,7 @@ namespace Restaurant.Services.Authentication.Service
     {
         Task<string> Register (RegistrationRequestDTO registrationRequestDTO);
         Task<LoginResponseDTO> Login (LoginRequestDTO loginRequestDTO);
+        Task<bool> AssignRole(string email, string roleName);
 
     }
 }

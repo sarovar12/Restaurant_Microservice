@@ -11,13 +11,31 @@ namespace Restaurant.Services.Authentication.Service
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IJwtGenerator _jwtGenerator;
 
 
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
+
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context, IJwtGenerator jwtGenerator)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
+            _jwtGenerator = jwtGenerator;
+        }
+
+        public async Task<bool> AssignRole(string email, string roleName)
+        {
+            var user = await _context.ApplicationUsers.FirstOrDefaultAsync(user => user.Email.ToLower() == email.ToLower());
+            if(user != null)
+            {
+                if( _roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
+                {
+                    _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
+                }
+                await _userManager.AddToRoleAsync(user, roleName);
+                return true;
+            }
+            return false;
         }
 
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
@@ -32,6 +50,7 @@ namespace Restaurant.Services.Authentication.Service
                     Token = ""
                 };
             }
+            var jwtToken = _jwtGenerator.GenerateToken(user);
 
             UserDTO userDTO = new()
             {
@@ -41,7 +60,7 @@ namespace Restaurant.Services.Authentication.Service
             LoginResponseDTO loginResponseDTO = new LoginResponseDTO()
             {
                 User = userDTO,
-                Token = ""
+                Token = jwtToken
             };
             return loginResponseDTO;
         } 
@@ -64,6 +83,8 @@ namespace Restaurant.Services.Authentication.Service
             if (result.Succeeded)
             {
                 var userToReturn = _context.ApplicationUsers.First(user => user.UserName == registrationRequestDTO.Email);
+
+
                 UserDTO userDTO = new()
                 {
                     Email = userToReturn.Email,
@@ -71,6 +92,7 @@ namespace Restaurant.Services.Authentication.Service
                     Name = userToReturn.Name,
                     PhoneNumber = userToReturn.PhoneNumber
                 };
+                 
                 return "";
             }
             else

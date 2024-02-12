@@ -15,7 +15,28 @@ namespace Restaurant.Services.Authentication.DatabaseContext
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Seed roles
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "Customer",
+                    NormalizedName = "CUSTOMER"
+                }
+            );
+        }
+
+
     }
 }
  
