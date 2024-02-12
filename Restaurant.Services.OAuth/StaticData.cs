@@ -38,7 +38,7 @@ namespace Restaurant.Services.OAuth
                 {
                     ClientId="sarovar",
                     ClientSecrets ={new Secret("secret".Sha256())},
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris={ "https://localhost:44382/signin-oidc" },
                     PostLogoutRedirectUris={"https://localhost:44382/signout-callback-oidc"},
                     AllowedScopes =new List<string>

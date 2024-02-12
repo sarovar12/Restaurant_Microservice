@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Services.OAuth;
 using Restaurant.Services.OAuth.DatabaseContext;
+using Restaurant.Services.OAuth.Initializer;
 using Restaurant.Services.OAuth.Models;
-using System.Security.Principal;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,23 +35,31 @@ builder.Services.AddIdentityServer(options =>
 .AddInMemoryClients(StaticData.Clients)
 .AddAspNetIdentity<ApplicationUser>()
 .AddDeveloperSigningCredential();
-
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    var dbInitializer = serviceProvider.GetRequiredService<IDbInitializer>();
+    dbInitializer.Initialize();
+}
+
 // Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 app.UseIdentityServer();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

@@ -1,4 +1,5 @@
 using Restaurant.Web;
+using Restaurant.Web.Services;
 using Restaurant.Web.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,9 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddHttpClient<IProductServices, ProductService>();
 Standard.ProductAPIBase = builder.Configuration["ServiceURLs:ProductsAPI"];
+Standard.CouponAPIBase = builder.Configuration["ServiceURLs:CouponAPI"];
 builder.Services.AddScoped<IProductServices, ProductService>();
 builder.Services.AddControllersWithViews();
-
+  
 
 var app = builder.Build();
 
@@ -24,7 +26,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

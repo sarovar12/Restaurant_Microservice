@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Restaurant.Services.ProductAPI.Models.DTO;
 using Restaurant.Services.ProductAPI.Repository;
 
@@ -16,6 +17,7 @@ namespace Restaurant.Services.ProductAPI.Controllers
 
         }
         [HttpGet]
+
         public async Task<ResponseDTO> GetProducts()
         {
             try
@@ -96,6 +98,7 @@ namespace Restaurant.Services.ProductAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+
         public async Task<ResponseDTO> DeleteProduct(int id)
         {
             try

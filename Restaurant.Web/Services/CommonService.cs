@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Newtonsoft.Json;
 using Restaurant.Web.Models;
+using Restaurant.Web.Services.IServices;
 using System.ComponentModel;
 using System.Text;
 
-namespace Restaurant.Web.Services.IServices
+namespace Restaurant.Web.Services
 {
     public class CommonService : ICommonService
     {
@@ -13,7 +14,7 @@ namespace Restaurant.Web.Services.IServices
         public CommonService(IHttpClientFactory httpClientFactory)
         {
             this.httpClientFactory = httpClientFactory;
-            this.responseModel = new ResponseDTO();
+            responseModel = new ResponseDTO();
         }
 
 
