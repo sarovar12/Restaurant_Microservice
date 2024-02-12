@@ -4,12 +4,25 @@ using Restaurant.Web.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
+
+
 // Add services to the container.
 builder.Services.AddHttpClient<IProductServices, ProductService>();
+builder.Services.AddHttpClient<IAuthServices, AuthService>();
+builder.Services.AddHttpClient<ICouponService,CouponServices>();
+
 Standard.ProductAPIBase = builder.Configuration["ServiceURLs:ProductsAPI"];
 Standard.CouponAPIBase = builder.Configuration["ServiceURLs:CouponAPI"];
+Standard.AuthenticationAPIBase = builder.Configuration["ServiceURLs:AuthenticationAPI"];
+
 builder.Services.AddScoped<IProductServices, ProductService>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IAuthServices, AuthService>();
+builder.Services.AddScoped<ICouponService, CouponServices>();   
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+
   
 
 var app = builder.Build();
@@ -18,7 +31,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

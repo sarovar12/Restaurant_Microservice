@@ -38,17 +38,14 @@ namespace Restaurant.Services.Authentication.Service
             return false;
         }
 
-        public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
+        public async Task<LoginResponseDTO?> Login(LoginRequestDTO loginRequestDTO)
         {
             var user = await _context.ApplicationUsers.FirstOrDefaultAsync(user => user.UserName.ToLower() == loginRequestDTO.Username.ToLower());
             bool isValid = await _userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
             if (user == null || isValid == false)
             {
-                return new LoginResponseDTO()
-                {
-                    User = null,
-                    Token = ""
-                };
+
+                return null;
             }
             var jwtToken = _jwtGenerator.GenerateToken(user);
 
