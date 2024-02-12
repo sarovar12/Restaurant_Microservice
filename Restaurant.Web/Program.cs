@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Restaurant.Web;
 using Restaurant.Web.Services;
 using Restaurant.Web.Services.IServices;
@@ -23,7 +24,15 @@ builder.Services.AddScoped<IAuthServices, AuthService>();
 builder.Services.AddScoped<ICouponService, CouponServices>();   
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 
-  
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+      .AddCookie(options =>
+      {
+          options.ExpireTimeSpan = TimeSpan.FromHours(10);
+          options.LoginPath = "/Auth/Login";
+          options.AccessDeniedPath = "/Auth/AccessDenied";
+      });
+
+
 
 var app = builder.Build();
 
@@ -36,7 +45,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
