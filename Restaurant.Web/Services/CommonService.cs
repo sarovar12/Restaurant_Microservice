@@ -2,31 +2,41 @@
 using Newtonsoft.Json;
 using Restaurant.Web.Models;
 using Restaurant.Web.Services.IServices;
-using System.ComponentModel;
 using System.Text;
 
 namespace Restaurant.Web.Services
 {
     public class CommonService : ICommonService
     {
-        public ResponseDTO responseModel { get; set; }
-        public IHttpClientFactory httpClientFactory { get; set; }
-        public CommonService(IHttpClientFactory httpClientFactory)
+
+        private readonly ITokenProvider _tokenProvider;
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public CommonService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
         {
-            this.httpClientFactory = httpClientFactory;
-            responseModel = new ResponseDTO();
+            _httpClientFactory = httpClientFactory;
+            _tokenProvider = tokenProvider;
         }
 
 
 
-        public async Task<T> SendAsync<T>(RequestHandler requestHandler)
+        public async Task<ResponseDTO?> SendAsync(RequestHandler requestHandler, bool withBearer = true)
         {
             try
             {
 
-                var client = httpClientFactory.CreateClient("RestaurantAPI");
+                var client = _httpClientFactory.CreateClient("RestaurantAPI");
                 HttpRequestMessage message = new HttpRequestMessage();
                 message.Headers.Add("Accept", "application/json");
+
+                //token
+                if (withBearer)
+                {
+                    var token = _tokenProvider.GetToken();
+                    message.Headers.Add("Authorization", $"Bearer {token}");
+                }
+
+
                 message.RequestUri = new Uri(requestHandler.URL);
                 client.DefaultRequestHeaders.Clear();
                 if (requestHandler.Data != null)
@@ -56,7 +66,7 @@ namespace Restaurant.Web.Services
                 }
                 apiResponse = await client.SendAsync(message);
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                var apiResponseDTO = JsonConvert.DeserializeObject<T>(apiContent);
+                var apiResponseDTO = JsonConvert.DeserializeObject<ResponseDTO?>(apiContent);
                 return apiResponseDTO;
             }
             catch (Exception ex)
@@ -72,15 +82,11 @@ namespace Restaurant.Web.Services
 
                 };
                 var res = JsonConvert.SerializeObject(dto);
-                var apiResponseDTO = JsonConvert.DeserializeObject<T>(res);
+                var apiResponseDTO = JsonConvert.DeserializeObject<ResponseDTO?>(res);
                 return apiResponseDTO;
 
             }
         }
 
-        public void Dispose()
-        {
-            GC.SuppressFinalize(true);
-        }
-    }
+       }
 }

@@ -2,13 +2,13 @@
 
 namespace Restaurant.Web.Services.IServices
 {
-    public interface IProductServices :ICommonService
+    public interface IProductServices 
     {
-        Task<T> GetAllProducts<T>();
-        Task<T> GetProductById<T>(int id);
-        Task<T> CreateProduct <T>(ProductDTO productDTO);
-        Task<T> UpdateProduct<T>(ProductDTO productDTO);
-        Task<T> DeleteProduct<T>(int id);
+        Task<ResponseDTO?> GetAllProducts();
+        Task<ResponseDTO?> GetProductById(int id);
+        Task<ResponseDTO?> CreateProduct (ProductDTO productDTO);
+        Task<ResponseDTO?> UpdateProduct(ProductDTO productDTO);
+        Task<ResponseDTO?> DeleteProduct(int id);
 
     }
 }

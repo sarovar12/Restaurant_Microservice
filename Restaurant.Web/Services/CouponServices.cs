@@ -4,19 +4,19 @@ using Restaurant.Web.Services.IServices;
 
 namespace Restaurant.Web.Services
 {
-    public class CouponServices : CommonService, ICouponService
+    public class CouponServices : ICouponService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICommonService _commonService;
 
 
-        public CouponServices(IHttpClientFactory clientFactory) : base(clientFactory)
+        public CouponServices(ICommonService commonService) 
         {
-            _httpClientFactory = clientFactory;
+            _commonService = commonService;
         }
 
-        public async Task<T> GetCoupon<T>(string couponCode, string token = null)
+        public async Task<ResponseDTO?> GetCoupon(string couponCode, string token = null)
         {
-            return await this.SendAsync<T>(new RequestHandler()
+            return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.GET,
                 URL = Standard.CouponAPIBase + "/api/getbycode/" + couponCode,

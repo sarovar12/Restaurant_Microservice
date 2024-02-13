@@ -1,24 +1,59 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Restaurant.Web.Models;
+using Restaurant.Web.Services;
+using Restaurant.Web.Services.IServices;
 using System.Diagnostics;
 
 namespace Restaurant.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProductServices _productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IProductServices productService)
         {
-            _logger = logger;
+            _productService = productService;
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<ProductDTO>? list = new();
+
+            ResponseDTO? response = await _productService.GetAllProducts();
+
+            if (response != null && response.Success)
+            {
+                list = JsonConvert.DeserializeObject<List<ProductDTO>>(Convert.ToString(response.Result));
+            }
+            else
+            {
+                TempData["error"] = response?.DisplayMessage;
+            }
+
+            return View(list);
         }
 
+        [Authorize]
+        public async Task<IActionResult> ProductDetails(int productId)
+        {
+            ProductDTO? model = new();
+
+            ResponseDTO? response = await _productService.GetProductById(productId);
+
+            if (response != null && response.Success)
+            {
+                model = JsonConvert.DeserializeObject<ProductDTO>(Convert.ToString(response.Result));
+            }
+            else
+            {
+                TempData["error"] = response?.DisplayMessage;
+            }
+
+            return View(model);
+        }
         public IActionResult Privacy()
         {
             return View();

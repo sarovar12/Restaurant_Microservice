@@ -2,9 +2,8 @@
 
 namespace Restaurant.Web.Services.IServices
 {
-    public interface ICommonService : IDisposable
+    public interface ICommonService
     {
-        ResponseDTO responseModel { get; set; }
-        Task<T> SendAsync<T>(RequestHandler requestHandler);
+        Task<ResponseDTO?> SendAsync(RequestHandler requestHandler, bool withBearer = true);
     }
 }

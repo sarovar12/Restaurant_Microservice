@@ -6,6 +6,7 @@ using Restaurant.Services.ProductAPI.Repository;
 namespace Restaurant.Services.ProductAPI.Controllers
 {
     [Route("api/products")]
+    [ApiController]
     public class ProductController : ControllerBase
     {
         protected ResponseDTO _response;
@@ -98,7 +99,6 @@ namespace Restaurant.Services.ProductAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-
         public async Task<ResponseDTO> DeleteProduct(int id)
         {
             try

@@ -31,7 +31,7 @@ namespace Restaurant.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequestDTO loginRequestDTO)
         {
-            ResponseDTO responseDTO = await _authServices.Login<ResponseDTO>(loginRequestDTO);
+            ResponseDTO responseDTO = await _authServices.Login(loginRequestDTO);
             if (responseDTO != null & responseDTO.Success)
             {
                 LoginResponseDTO loginResponseDTO = JsonConvert.DeserializeObject<LoginResponseDTO>(Convert.ToString(responseDTO.Result));
@@ -43,6 +43,7 @@ namespace Restaurant.Web.Controllers
             else
             {
                 ModelState.AddModelError("CustomError", responseDTO.DisplayMessage);
+                TempData["error"] = responseDTO.DisplayMessage;
                 return View(loginRequestDTO);
             }
         }
@@ -61,7 +62,7 @@ namespace Restaurant.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegistrationRequestDTO registrationRequestDTO)
         {
-            ResponseDTO result = await _authServices.Register<ResponseDTO>(registrationRequestDTO);
+            ResponseDTO result = await _authServices.Register(registrationRequestDTO);
             ResponseDTO assignRole;
             if (result != null & result.Success)
             {
@@ -69,11 +70,16 @@ namespace Restaurant.Web.Controllers
                 {
                     registrationRequestDTO.Role = Standard.RoleCustomer;
                 }
-                assignRole = await _authServices.AssignRole<ResponseDTO>(registrationRequestDTO);
+                assignRole = await _authServices.AssignRole(registrationRequestDTO);
                 if (assignRole != null && assignRole.Success)
                 {
                     TempData["Success"] = "Registration Sucessful";
                     return RedirectToAction(nameof(Login));
+                }
+                else
+                {
+                    TempData["error"] = result.DisplayMessage;
+                    return View(registrationRequestDTO);
                 }
 
             }
@@ -106,7 +112,9 @@ namespace Restaurant.Web.Controllers
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Name).Value));
             identity.AddClaim(new Claim(ClaimTypes.Name,
-                jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
+                jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));   
+            identity.AddClaim(new Claim(ClaimTypes.Role,
+                jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
 
 
             var principal = new ClaimsPrincipal(identity);

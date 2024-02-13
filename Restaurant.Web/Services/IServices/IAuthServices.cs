@@ -4,9 +4,9 @@ namespace Restaurant.Web.Services.IServices
 {
     public interface IAuthServices
     {
-        Task<T> Login<T> (LoginRequestDTO loginRequestDTO);
-        Task<T> Register<T> (RegistrationRequestDTO registrationRequestDTO);
-        Task<T> AssignRole<T> (RegistrationRequestDTO registrationRequestDTO);
+        Task<ResponseDTO?> Login (LoginRequestDTO loginRequestDTO);
+        Task<ResponseDTO?> Register (RegistrationRequestDTO registrationRequestDTO);
+        Task<ResponseDTO?> AssignRole (RegistrationRequestDTO registrationRequestDTO);
 
     }
 }

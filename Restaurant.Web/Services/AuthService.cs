@@ -1,20 +1,19 @@
-﻿using Newtonsoft.Json.Linq;
-using Restaurant.Web.Models;
+﻿using Restaurant.Web.Models;
 using Restaurant.Web.Services.IServices;
 
 namespace Restaurant.Web.Services
 {
-    public class AuthService : CommonService, IAuthServices
+    public class AuthService : IAuthServices
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        public AuthService(IHttpClientFactory clientFactory) : base(clientFactory)
+        private readonly ICommonService _commonService;
+        public AuthService( ICommonService commonService) 
         {
-            _httpClientFactory = clientFactory;
+            _commonService = commonService;
 
         }
-         public async Task<T> AssignRole<T>(RegistrationRequestDTO registrationRequestDTO)
+         public async Task<ResponseDTO?> AssignRole(RegistrationRequestDTO registrationRequestDTO)
         {
-            return await SendAsync<T>(new RequestHandler()
+            return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.POST,
                 Data = registrationRequestDTO,
@@ -22,11 +21,10 @@ namespace Restaurant.Web.Services
             });
         }
 
-       
 
-        public async Task<T> Login<T>(LoginRequestDTO loginRequestDTO)
+        public async Task<ResponseDTO?> Login(LoginRequestDTO loginRequestDTO)
         {
-            return await SendAsync<T>(new RequestHandler()
+            return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.POST,
                 Data = loginRequestDTO,
@@ -34,14 +32,13 @@ namespace Restaurant.Web.Services
               });
         }
 
-        public async Task<T> Register<T>(RegistrationRequestDTO registrationRequestDTO)
+        public async Task<ResponseDTO?> Register(RegistrationRequestDTO registrationRequestDTO)
         {
-            return await SendAsync<T>(new RequestHandler()
+            return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.POST,
                 Data = registrationRequestDTO,
                 URL = Standard.AuthenticationAPIBase + "/api/auth/register",
-                AccessToken = "",
             });
         }
     }

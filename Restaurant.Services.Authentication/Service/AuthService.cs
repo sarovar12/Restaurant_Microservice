@@ -47,7 +47,8 @@ namespace Restaurant.Services.Authentication.Service
 
                 return null;
             }
-            var jwtToken = _jwtGenerator.GenerateToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var jwtToken = _jwtGenerator.GenerateToken(user,roles);
 
             UserDTO userDTO = new()
             {

@@ -11,9 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{5E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Services.ProductAPI", "Restaurant.Services.ProductAPI\Restaurant.Services.ProductAPI.csproj", "{80445113-4C09-49BE-A295-DBEE55AF2853}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Services.CouponAPI", "Restaurant.Services.CouponAPI\Restaurant.Services.CouponAPI.csproj", "{1A063B1A-4525-46C6-BEF3-D9C3774F1442}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Services.CouponAPI", "Restaurant.Services.CouponAPI\Restaurant.Services.CouponAPI.csproj", "{1A063B1A-4525-46C6-BEF3-D9C3774F1442}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Services.Authentication", "Restaurant.Services.Authentication\Restaurant.Services.Authentication.csproj", "{0B81ACCD-F82F-4615-A095-0E8C93FD57EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Services.Authentication", "Restaurant.Services.Authentication\Restaurant.Services.Authentication.csproj", "{0B81ACCD-F82F-4615-A095-0E8C93FD57EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Services.ShoppingCartAPI", "Restaurant.Services.ShoppingCartAPI\Restaurant.Services.ShoppingCartAPI.csproj", "{20272A03-252E-4930-99EA-196C5D69F545}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{0B81ACCD-F82F-4615-A095-0E8C93FD57EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B81ACCD-F82F-4615-A095-0E8C93FD57EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B81ACCD-F82F-4615-A095-0E8C93FD57EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20272A03-252E-4930-99EA-196C5D69F545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20272A03-252E-4930-99EA-196C5D69F545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20272A03-252E-4930-99EA-196C5D69F545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20272A03-252E-4930-99EA-196C5D69F545}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{80445113-4C09-49BE-A295-DBEE55AF2853} = {5E61FC43-AFA6-4B53-99F7-1233250D2CC9}
 		{1A063B1A-4525-46C6-BEF3-D9C3774F1442} = {5E61FC43-AFA6-4B53-99F7-1233250D2CC9}
 		{0B81ACCD-F82F-4615-A095-0E8C93FD57EF} = {5E61FC43-AFA6-4B53-99F7-1233250D2CC9}
+		{20272A03-252E-4930-99EA-196C5D69F545} = {5E61FC43-AFA6-4B53-99F7-1233250D2CC9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {57D8D1BA-B2CB-488E-90B3-361F38A61524}

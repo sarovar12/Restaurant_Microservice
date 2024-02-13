@@ -3,64 +3,59 @@ using Restaurant.Web.Services.IServices;
 
 namespace Restaurant.Web.Services
 {
-    public class ProductService : CommonService, IProductServices
+    public class ProductService :  IProductServices
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        public ProductService(IHttpClientFactory clientFactory) : base(clientFactory)
+        private readonly ICommonService _commonService;
+        public ProductService(ICommonService commonService) 
         {
-            _httpClientFactory = clientFactory;
+            _commonService = commonService;
 
         }
-        public async Task<T> CreateProduct<T>(ProductDTO productDTO)
+        public async Task<ResponseDTO?> CreateProduct(ProductDTO productDTO)
         {
-            return await SendAsync<T>(new RequestHandler()
+            return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.POST,
                 Data = productDTO,
                 URL = Standard.ProductAPIBase + "/api/products",
-                AccessToken = "",
             });
         }
 
-        public async Task<T> DeleteProduct<T>(int id)
+        public async Task<ResponseDTO?> DeleteProduct(int id)
         {
-            return await SendAsync<T>(new RequestHandler()
+            return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.DELETE,
                 URL = Standard.ProductAPIBase + "/api/products/" + id,
-                AccessToken = "",
             });
         }
 
-        public async Task<T> GetAllProducts<T>()
+        public async Task<ResponseDTO?> GetAllProducts()
         {
-            return await SendAsync<T>(new RequestHandler()
+            return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.GET,
                 URL = Standard.ProductAPIBase + "/api/products",
-                AccessToken = "",
             });
         }
 
-        public async Task<T> GetProductById<T>(int id)
+        public async Task<ResponseDTO?> GetProductById(int id)
         {
-            return await SendAsync<T>(new RequestHandler()
+            return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.GET,
                 URL = Standard.ProductAPIBase + "/api/products/" + id,
-                AccessToken = "",
             });
 
         }
 
-        public async Task<T> UpdateProduct<T>(ProductDTO productDTO)
+        public async Task<ResponseDTO?> UpdateProduct(ProductDTO productDTO)
         {
-            return await SendAsync<T>(new RequestHandler()
+            return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.PUT,
                 URL = Standard.ProductAPIBase + "/api/products",
-                Data = productDTO,
-                AccessToken = "",
+                Data = productDTO
             });
         }
     }

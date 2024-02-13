@@ -4,6 +4,6 @@ namespace Restaurant.Services.Authentication.Service
 {
     public interface IJwtGenerator
     {
-        string GenerateToken(ApplicationUser applicationUser);
+        string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles);
     }
 }

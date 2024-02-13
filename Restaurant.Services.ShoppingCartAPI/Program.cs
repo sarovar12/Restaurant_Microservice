@@ -1,27 +1,22 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Restaurant.Services.ProductAPI.DatabaseContext;
-using Restaurant.Services.ProductAPI.Extensions;
-using Restaurant.Services.ProductAPI.Repository;
+using Restaurant.Services.ShoppingCartAPI.DatabaseContext;
+using Restaurant.Services.ShoppingCartAPI.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddEndpointsApiExplorer();
-
-
+builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
-
 builder.Services.AddSwaggerGen(option =>
 {
     option.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new OpenApiSecurityScheme
@@ -59,7 +54,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
