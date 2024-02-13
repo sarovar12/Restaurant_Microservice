@@ -19,6 +19,7 @@ builder.Services.AddHttpClient<ICommonService, CommonService>();
 Standard.ProductAPIBase = builder.Configuration["ServiceURLs:ProductsAPI"];
 Standard.CouponAPIBase = builder.Configuration["ServiceURLs:CouponAPI"];
 Standard.AuthenticationAPIBase = builder.Configuration["ServiceURLs:AuthenticationAPI"];
+Standard.ShoppingCartAPIBase = builder.Configuration["ServiceURLs:CartAPI"];
 
 builder.Services.AddScoped<IProductServices, ProductService>();
 builder.Services.AddScoped<IAuthServices, AuthService>();

@@ -4,6 +4,7 @@ using Restaurant.Services.CouponAPI.Repository;
 
 namespace Restaurant.Services.CouponAPI.Controllers
 {
+    [Route("api/coupon")]
     public class CouponController : ControllerBase
     {
         private readonly ICouponRepository _couponRepository;
@@ -16,7 +17,7 @@ namespace Restaurant.Services.CouponAPI.Controllers
 
         }
         [HttpGet]
-        [Route("api/GetByCode/{code}")]
+        [Route("GetByCode/{code}")]
         public async Task<object> GetDiscountByCode(string code)
         {
             try
