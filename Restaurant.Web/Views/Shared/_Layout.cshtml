@@ -27,6 +27,12 @@
                         <li class="nav-item pt-lg-2">
                             <a class="nav-link " asp-area="" asp-controller="Product" asp-action="ProductIndex">Products</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link " asp-area="" asp-controller="Cart" asp-action="CartIndex">
+                                &nbsp; <i class="fa-solid fa-cart-shopping"></i>
+                            </a>
+                        </li>
+
                     </ul>
                     <ul class="navbar-nav">
                         @if (!User.Identity.IsAuthenticated)
@@ -43,12 +49,12 @@
                             <li class="nav-item">
                                 Hello @User.Identity.Name
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link " asp-controller="Auth" asp-action="Logout"> Logout </a>
-                            </li>           
-
-                            
                         }
+                        <li class="nav-item">
+                            <a class="nav-link " asp-area="" asp-controller="Cart" asp-action="CartIndex">
+                                &nbsp; <i class="bi bi-cart"></i>&nbsp;
+                            </a>
+                        </li>
 
 
                     </ul>

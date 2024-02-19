@@ -34,7 +34,7 @@ namespace Restaurant.Web.Services
         {
             return await _commonService.SendAsync(new RequestHandler()
             {
-                ApiType = Standard.ApiType.POST,
+                ApiType = Standard.ApiType.GET,
                 URL = Standard.ShoppingCartAPIBase + "/api/cart/GetCart/"+userId
             });
         }
@@ -44,7 +44,7 @@ namespace Restaurant.Web.Services
             return await _commonService.SendAsync(new RequestHandler()
             {
                 ApiType = Standard.ApiType.POST,
-                URL = Standard.ShoppingCartAPIBase + "/api/cart/RemoveCart"
+                URL = Standard.ShoppingCartAPIBase + "/api/cart/RemoveCart/"+ cartDetailsId 
             });
         }
 
