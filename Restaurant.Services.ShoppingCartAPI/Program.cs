@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Restaurant.MessageBus.Interfaces;
+using Restaurant.MessageBus.Services;
 using Restaurant.Services.ShoppingCartAPI.DatabaseContext;
 using Restaurant.Services.ShoppingCartAPI.Extensions;
 using Restaurant.Services.ShoppingCartAPI.Helpers;
@@ -16,6 +18,10 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+
+//From Another project
+builder.Services.AddScoped<IMessageBus, MessageBus>();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>(); 
 //Communicate with other services

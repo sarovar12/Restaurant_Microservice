@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Restaurant.MessageBus.Interfaces;
 using Restaurant.Services.ShoppingCartAPI.DatabaseContext;
 using Restaurant.Services.ShoppingCartAPI.Model;
 using Restaurant.Services.ShoppingCartAPI.Model.DTO;
@@ -19,13 +20,18 @@ namespace Restaurant.Services.ShoppingCartAPI.Controllers
         private readonly ApplicationDbContext _db;
         private readonly IProductService _productService;
         private readonly ICouponService _couponService;
-        public CartAPIController(IMapper mapper, ApplicationDbContext db, IProductService productService, ICouponService couponService)
+        private readonly IMessageBus _messageBus;
+        private readonly IConfiguration _configuration;
+        public CartAPIController(IMapper mapper, ApplicationDbContext db, IProductService productService, ICouponService couponService
+            , IMessageBus messageBus, IConfiguration configuration)
         {
             _response = new ResponseDTO();
             _mapper = mapper;
             _db = db;
             _productService = productService;
             _couponService = couponService;
+            _messageBus = messageBus;
+            _configuration = configuration;
         }
 
         [HttpGet("GetCart/{userId}")]
@@ -172,6 +178,24 @@ namespace Restaurant.Services.ShoppingCartAPI.Controllers
             {
                 _response.DisplayMessage = ex.Message.ToString();
                 _response.Success = false;
+            }
+            return _response;
+        }
+
+
+        [HttpPost("EmailCartRequest")]
+        public async Task<object> EmailCartRequest([FromBody] CartDTO cartDto)
+        {
+            try
+            {
+
+                await _messageBus.PublishMessage(cartDto, _configuration.GetValue<string>("TopicsAndQueues:EmailShoppingCart"));
+                _response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                _response.Success = false;
+                _response.DisplayMessage = ex.ToString();
             }
             return _response;
         }
