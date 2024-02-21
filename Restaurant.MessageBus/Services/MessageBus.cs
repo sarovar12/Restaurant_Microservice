@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Restaurant.MessageBus.Interfaces;
 using System.Text;
@@ -7,14 +8,13 @@ namespace Restaurant.MessageBus.Services
 {
     public class MessageBus : IMessageBus
     {
-        private string connectionString;
-
-        public MessageBus()
+        private readonly IConfiguration _configuration;
+        public MessageBus(IConfiguration configuration)
         {
-            connectionString = Environment.GetEnvironmentVariable("ConnectionString:MessagingBus");
+           _configuration = configuration;
 
         }
-        public async Task PublishMessage(object message, string topic_queue_Name)
+        public async Task PublishMessage(object message, string topic_queue_Name, string connectionString)
         {
 
             await using var client = new ServiceBusClient(connectionString);

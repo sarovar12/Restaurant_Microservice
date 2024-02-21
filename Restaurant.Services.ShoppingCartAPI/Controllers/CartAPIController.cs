@@ -189,7 +189,7 @@ namespace Restaurant.Services.ShoppingCartAPI.Controllers
             try
             {
 
-                await _messageBus.PublishMessage(cartDto, _configuration.GetValue<string>("TopicsAndQueues:EmailShoppingCart"));
+                await _messageBus.PublishMessage(cartDto, _configuration.GetValue<string>("TopicsAndQueues:EmailShoppingCart"),_configuration.GetValue<string>("ConnectionStrings:MessagingBus"));
                 _response.Result = true;
             }
             catch (Exception ex)
