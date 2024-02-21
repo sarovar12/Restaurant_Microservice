@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 Restaurant.MessageBus/appsettings.json
 /Restaurant.MessageBus/appsettings.json
+/Restaurant.Services.ShoppingCartAPI/appsettings.json
